@@ -1,0 +1,23 @@
+{
+  "kind": "evm_address",
+  "vectors": [
+    {
+      "description": "Sentora PRIME Main vault (SPECS §5.4 example)",
+      "chainId": "1",
+      "params": { "address": "0xC21b08C16458202593D4D9B26b9984Ee67b38BbD" },
+      "marketId": "0x000000000000000000000000c21b08c16458202593d4d9b26b9984ee67b38bbd"
+    },
+    {
+      "description": "syrupUSDC token hold",
+      "chainId": "1",
+      "params": { "address": "0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b" },
+      "marketId": "0x00000000000000000000000080ac24aa929eaf5013f6436cda2a7ba190f5cc0b"
+    },
+    {
+      "description": "smallest non-zero address, left-padded",
+      "chainId": "1",
+      "params": { "address": "0x0000000000000000000000000000000000000001" },
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000000001"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "stellar_contract",
+  "vectors": [
+    {
+      "description": "Sentora Stellar USDC vault",
+      "chainId": "9223372036854775809",
+      "params": { "contract": "CAHEWHOPPDBQYFMAOLDOXXGUX2BCR7EXP4CWYCRY3NEAJB35YPZMMJFF" },
+      "marketId": "0x0e4b1dcf78c30c158072c6ebdcd4be8228fc977f056c0a38db4804877dc3f2c6"
+    },
+    {
+      "description": "USDC token contract",
+      "chainId": "9223372036854775809",
+      "params": { "contract": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75" },
+      "marketId": "0xadefce59aee52968f76061d494c2525b75659fa4296a65f499ef29e56477e496"
+    },
+    {
+      "description": "contract ID 0x00…01",
+      "chainId": "9223372036854775809",
+      "params": { "contract": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM" },
+      "marketId": "0x0000000000000000000000000000000000000000000000000000000000000001"
+    },
+    {
+      "description": "contract ID 0xff…ff",
+      "chainId": "9223372036854775809",
+      "params": { "contract": "CD7777777777777777777777777777777777777777777777777767GY" },
+      "marketId": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+{
+  "schemaVersion": 1,
+  "chains": {
+    "1": { "name": "Ethereum" },
+    "5000": { "name": "Mantle" },
+    "9745": { "name": "Plasma" },
+    "9223372036854775809": { "name": "Stellar" }
+  },
+  "protocols": {
+    "maple": {
+      "name": "Maple",
+      "description": "Maple Syrup yield-bearing tokens"
+    },
+    "morpho_vault": {
+      "name": "Morpho Vault",
+      "description": "Morpho vaults and the Morpho markets they allocate to"
+    },
+    "morpho_market": {
+      "name": "Morpho Market",
+      "description": "Positions held directly in Morpho Blue markets"
+    },
+    "aave_v3": {
+      "name": "Aave V3",
+      "description": "Positions in Aave V3 deployments, across all chains"
+    },
+    "spark": {
+      "name": "Spark",
+      "description": "Positions in Spark, an Aave V3 fork"
+    },
+    "stellar_vault": {
+      "name": "Stellar Vault",
+      "description": "Vaults on Stellar (Soroban)"
+    }
+  },
+  "markets": [
+    {
+      "chainId": "1",
+      "protocol": "maple",
+      "kind": "evm_address",
+      "params": { "address": "0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b" },
+      "name": "syrupUSDC"
+    },
+    {
+      "chainId": "1",
+      "protocol": "maple",
+      "kind": "evm_address",
+      "params": { "address": "0x356B8d89c1e1239Cbbb9dE4815c39A1474d5BA7D" },
+      "name": "syrupUSDT"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_vault",
+      "kind": "evm_address",
+      "params": { "address": "0xb576765fB15505433aF24FEe2c0325895C559FB2" },
+      "name": "PayPal USD Main"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_vault",
+      "kind": "evm_address",
+      "params": { "address": "0x8381a156958711E230f325428B5eb4b6555C75D9" },
+      "name": "Sentora Huma PST Main"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_vault",
+      "kind": "evm_address",
+      "params": { "address": "0xC21b08C16458202593D4D9B26b9984Ee67b38BbD" },
+      "name": "Sentora PRIME Main"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_vault",
+      "kind": "evm_address",
+      "params": { "address": "0x7cBcfc4F64be199eDE6db1D916ddcdb69f666B57" },
+      "name": "Sentora mWIN Main"
+    },
+    {
+      "chainId": "1",
+      "protocol": "spark",
+      "kind": "evm_address",
+      "params": { "address": "0x377C3bd93f2a2984E1E7bE6A5C22c525eD4A4815" },
+      "name": "Spark USDC supply (spUSDC)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_market",
+      "kind": "morpho_blue_borrow.v1",
+      "params": { "morphoMarketId": "0x41c41d0c9aadbf4751f5ee215ed5a16954a4b34e1b70fca5393d4b08858fa3fa" },
+      "name": "PRIME/PYUSD Morpho borrow (86% LLTV)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_market",
+      "kind": "morpho_blue_borrow.v1",
+      "params": { "morphoMarketId": "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e" },
+      "name": "wstETH/WETH Morpho borrow (96.5% LLTV)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_market",
+      "kind": "morpho_blue_borrow.v1",
+      "params": { "morphoMarketId": "0xb4977179610abfecfc8b76255a002c16b33f46d077beb86e5911e1fe9ee6e512" },
+      "name": "PST/PYUSD Morpho borrow (86% LLTV)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_market",
+      "kind": "morpho_blue_borrow.v1",
+      "params": { "morphoMarketId": "0x90ef0c5a0dc7c4de4ad4585002d44e9d411d212d2f6258e94948beecf8b4c0d5" },
+      "name": "sUSDe/PYUSD Morpho borrow (91.5% LLTV)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "morpho_market",
+      "kind": "morpho_blue_borrow.v1",
+      "params": { "morphoMarketId": "0xc9629945524f3fde56c7e8854a6c3d48e76b9d97236abbe73c750fcc7aeb8501" },
+      "name": "syrupUSDC/PYUSD Morpho borrow (91.5% LLTV)"
+    },
+    {
+      "chainId": "1",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0x0B925eD163218f6662a35e0f0371Ac234f9E9371",
+        "debtToken": "0x6df1C1E379bC5a00a7b4C6e67A203333772f45A8"
+      },
+      "name": "Aave V3 Core wstETH/USDT borrow"
+    },
+    {
+      "chainId": "1",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0x0B925eD163218f6662a35e0f0371Ac234f9E9371",
+        "debtToken": "0xeA51d7853EEFb32b6ee06b1C12E6dcCA88Be0fFE"
+      },
+      "name": "Aave V3 Core wstETH/WETH borrow"
+    },
+    {
+      "chainId": "1",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0x2D62109243b87C4bA3EE7bA1D91B0dD0A074d7b1",
+        "debtToken": "0xeA51d7853EEFb32b6ee06b1C12E6dcCA88Be0fFE"
+      },
+      "name": "Aave V3 Core rsETH/WETH borrow"
+    },
+    {
+      "chainId": "1",
+      "protocol": "spark",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0x12B54025C112Aa61fAce2CDB7118740875A566E9",
+        "debtToken": "0x2e7576042566f8D6990e07A1B61Ad1efd86Ae70d"
+      },
+      "name": "Spark wstETH/WETH borrow"
+    },
+    {
+      "chainId": "1",
+      "protocol": "spark",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0x12B54025C112Aa61fAce2CDB7118740875A566E9",
+        "debtToken": "0x529b6158d1D2992E3129F7C69E81a7c677dc3B12"
+      },
+      "name": "Spark wstETH/USDT borrow"
+    },
+    {
+      "chainId": "5000",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0xaf972F332FF79bd32A6CB6B54f903eA0F9b16C2a",
+        "debtToken": "0x5d9e4663d3d532179c404dBe9edF93045F89aDed"
+      },
+      "name": "Aave V3 Mantle sUSDe/USDT0 borrow"
+    },
+    {
+      "chainId": "9745",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0xC1A318493fF07a68fE438Cee60a7AD0d0DBa300E",
+        "debtToken": "0xCBBC427b5658672768E11BFDa00879839DB4785F"
+      },
+      "name": "Aave V3 Plasma sUSDe/USDT0 borrow"
+    },
+    {
+      "chainId": "9745",
+      "protocol": "aave_v3",
+      "kind": "aave_v3_position.v1",
+      "params": {
+        "collateralAToken": "0xD4eE376C40EdC83832aAaFc18fC0272660F5e90b",
+        "debtToken": "0xCBBC427b5658672768E11BFDa00879839DB4785F"
+      },
+      "name": "Aave V3 Plasma syrupUSDT/USDT0 borrow"
+    },
+    {
+      "chainId": "9223372036854775809",
+      "protocol": "stellar_vault",
+      "kind": "stellar_contract",
+      "params": { "contract": "CAHEWHOPPDBQYFMAOLDOXXGUX2BCR7EXP4CWYCRY3NEAJB35YPZMMJFF" },
+      "name": "Sentora Stellar USDC vault"
+    }
+  ]
+}

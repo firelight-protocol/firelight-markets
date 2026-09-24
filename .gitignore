@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+
+# bun.lock is the committed lockfile
+package-lock.json
+pnpm-lock.yaml
+yarn.lock

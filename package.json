@@ -1,0 +1,22 @@
+{
+  "name": "firelight-markets",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "lookup": "node src/cli.ts lookup",
+    "encode": "node src/cli.ts encode",
+    "validate": "node src/cli.ts validate",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"test/**/*.test.ts\""
+  },
+  "dependencies": {
+    "viem": "^2.56.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "kind": "morpho_blue_borrow.v1",
+  "tag": "0x017b3d1785a17b2dca86c73337c37c2258d9b362caadbd2d0708825b1f18263e",
+  "vectors": [
+    {
+      "description": "PRIME/PYUSD (86% LLTV)",
+      "chainId": "1",
+      "params": { "morphoMarketId": "0x41c41d0c9aadbf4751f5ee215ed5a16954a4b34e1b70fca5393d4b08858fa3fa" },
+      "marketId": "0x206699ca57e395a09bfafcd4296e5889e7c3e0c24c8b279a5fcde72fc731e0b4"
+    },
+    {
+      "description": "wstETH/WETH (96.5% LLTV)",
+      "chainId": "1",
+      "params": { "morphoMarketId": "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e" },
+      "marketId": "0xf2c7ae63b563225a70d97b20f32625f6a7c16b1e2ce0c82131e46869f0a04e35"
+    }
+  ]
+}
