@@ -114,6 +114,133 @@ Holding a Maple syrup token is one `evm_address` position: the address of the sy
 }
 ```
 
+### MetaMorpho v1 (`morpho_vault`)
+
+A MetaMorpho vault is one `evm_address` position for the vault, with a `morpho_blue_supply.v1` child for every market in its withdraw queue (`withdrawQueue(0)` to `withdrawQueue(withdrawQueueLength() - 1)`).
+
+The withdraw queue always contains every market with a non-zero cap and every market the vault still supplies to, so a market whose cap was set to 0 stays in until it is removed from the queue. Caps that are submitted but not yet accepted do not count.
+
+```json
+{
+  "chainId": "1",
+  "protocol": "morpho_vault",
+  "name": "<vault name>",
+  "positions": [
+    {
+      "kind": "evm_address",
+      "params": { "address": "<vault>" },
+      "children": [
+        { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } },
+        { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(1)>" } }
+      ]
+    }
+  ]
+}
+```
+
+### Morpho Vaults v2
+
+Protocol bucket not decided yet.
+
+A Vaults v2 vault allocates through adapters, and caps decide what each adapter can reach. Caps are set on ids, which are hashes the adapter defines. They are not Morpho Blue market ids, and the vault cannot list them. Find them from the vault's `IncreaseAbsoluteCap`, `DecreaseAbsoluteCap`, `IncreaseRelativeCap` and `DecreaseRelativeCap` events, which carry the `idData` preimage.
+
+An id is open when `absoluteCap(id) > 0` and `relativeCap(id) > 0`, or when `allocation(id) > 0`. The second case covers a cap that was lowered to 0 while funds are still allocated.
+
+The positions are:
+
+- the vault, as an `evm_address`. It holds the idle assets.
+- every adapter in `adapters(0)` to `adapters(adaptersLength() - 1)`, as an `evm_address` child of the vault. Removed adapters are left out.
+- under a Morpho Market V1 adapter, a `morpho_blue_supply.v1` child for every Blue market whose three ids from `adapter.ids(marketParams)` are all open. The candidates are the markets in the cap events that name this adapter, plus the markets in `marketIds(i)`, or in `marketParamsList(i)` on older adapters. The `morphoMarketId` is the Blue id, `keccak256(abi.encode(marketParams))`, not the vault's id.
+- under a Morpho Vault V1 adapter whose `adapterId()` is open, the MetaMorpho vault `morphoVaultV1()` as an `evm_address` child, with its own markets as children as described under MetaMorpho v1.
+
+The adapters only supply, so `morpho_blue_borrow.v1` never appears. Changes that are submitted but not yet executed do not count. If an adapter is neither of the two above, the vault cannot be declared until a rule for that adapter is written here.
+
+```json
+{
+  "chainId": "1",
+  "protocol": "<bucket>",
+  "name": "<vault name>",
+  "positions": [
+    {
+      "kind": "evm_address",
+      "params": { "address": "<vault>" },
+      "children": [
+        {
+          "kind": "evm_address",
+          "params": { "address": "<market adapter>" },
+          "children": [
+            { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<Blue market id>" } }
+          ]
+        },
+        {
+          "kind": "evm_address",
+          "params": { "address": "<vault adapter>" },
+          "children": [
+            {
+              "kind": "evm_address",
+              "params": { "address": "<morphoVaultV1()>" },
+              "children": [
+                { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Mellow Core Vaults
+
+Protocol bucket not decided yet.
+
+A Core Vault keeps idle assets itself and moves them into subvaults. A subvault calls other protocols, and every call is checked by its `verifier()`. A verifier allows calls in two ways: it lists some itself (`allowedCallAt(0)` to `allowedCallAt(allowedCalls() - 1)`), and it accepts proofs against a `merkleRoot()`. This is the same model as a Veda BoringVault's manageRoot. Mellow publishes each subvault's merkle leaves in `scripts/jsons/` of the `mellow-finance/flexible-vaults` repository.
+
+Many Mellow token addresses are share managers, not vaults. If the address has a `vault()` function, start from that vault.
+
+The positions are:
+
+- the vault, as an `evm_address`.
+- every subvault in `subvaultAt(0)` to `subvaultAt(subvaults() - 1)`, as an `evm_address` child of the vault.
+- under each subvault, every call target that holds funds, as a child. Get the targets from the verifier's `allowedCallAt` entries and from its merkle leaves. For a leaf that points to a custom verifier (such as `SymbioticVerifier`, `EigenLayerVerifier` or `ERC20Verifier`), the targets are the members of its roles, read with `getRoleMember`. For an `ERC20Verifier`, that includes the transfer recipients.
+- anything under a target that is itself a vault (another Core Vault, a BoringVault, a MetaMorpho vault), as described in that vault's own section.
+
+The merkle root must be checked before declaring. Rebuild it from the published leaves and compare it with `merkleRoot()`. If they differ, or if any leaf allows any target address, the vault cannot be declared.
+
+Leave out targets that do not hold funds: DEX routers, `SwapModule`, tokens that are only approved, and the deposit or redeem queues and Tellers of other vaults. For those, include the vault they feed into instead. Also leave out the vault's own deposit and redeem queues, the hooks and the oracle.
+
+The vault can also send funds off-chain, for example to a CeFi venue through Copper ClearLoop or Ceffu. In that case, the receiving address is a leaf.
+
+Older Mellow vaults use different contracts:
+
+- A Simple LRT vault (it has a `symbioticVault()` function) is the vault plus `symbioticVault()` and `symbioticCollateral()`.
+- A MultiVault (it has a `subvaultsCount()` function) is the vault plus `defaultCollateral()` and each `subvaultAt(i).vault`. For an EigenLayer subvault, also include its strategy, read from `instances(vault)` on the isolated-vault factory, as a child.
+
+```json
+{
+  "chainId": "1",
+  "protocol": "<bucket>",
+  "name": "<vault name>",
+  "positions": [
+    {
+      "kind": "evm_address",
+      "params": { "address": "<vault>" },
+      "children": [
+        {
+          "kind": "evm_address",
+          "params": { "address": "<subvault>" },
+          "children": [
+            { "kind": "evm_address", "params": { "address": "<Symbiotic vault>" } },
+            { "kind": "evm_address", "params": { "address": "<another Core Vault>" } }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Files
 
 | File | Purpose |
