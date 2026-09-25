@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "encode": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts"
   },
