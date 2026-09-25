@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "encode": "tsx src/cli.ts",
+    "lookup": "tsx src/lookup.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts"
   },

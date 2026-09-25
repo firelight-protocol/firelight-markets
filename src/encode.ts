@@ -36,3 +36,11 @@ export function encode(json: unknown): Hex {
   const leaves = [...new Set(Market.parse(json).positions.flatMap(flatten).map(positionId))].sort();
   return keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "bytes32" }], [MARKET_TAG, keccak256(concat(leaves))]));
 }
+
+/** Returns each market with its marketId. Throws on a duplicate (chainId, marketId). */
+export function registry(markets: unknown[]) {
+  const entries = markets.map((market) => ({ marketId: encode(market), ...Market.parse(market) }));
+  const keys = entries.map(({ chainId, marketId }) => `${chainId}:${marketId}`);
+  if (new Set(keys).size !== keys.length) throw new Error("duplicate (chainId, marketId)");
+  return entries;
+}

@@ -1,5 +1,9 @@
-// Usage: npm run encode -- market.json (one market, or a list of them)
-import { readFileSync } from "node:fs";
-import { encode } from "./encode.ts";
+// Usage: npm run encode -- markets.json [--write]
+// Prints one marketId per market, or with --write, writes registry.json.
+import { readFileSync, writeFileSync } from "node:fs";
+import { encode, registry } from "./encode.ts";
 
-for (const market of [JSON.parse(readFileSync(process.argv[2]!, "utf8"))].flat()) console.log(encode(market));
+const [file, flag] = process.argv.slice(2);
+const markets = [JSON.parse(readFileSync(file!, "utf8"))].flat();
+if (flag === "--write") writeFileSync("registry.json", JSON.stringify(registry(markets), null, 2) + "\n");
+else for (const market of markets) console.log(encode(market));
