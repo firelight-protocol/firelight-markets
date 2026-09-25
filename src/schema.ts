@@ -54,11 +54,11 @@ export const Market = z
     chainId: z.string().regex(/^[1-9][0-9]*$/, "invalid chainId"),
     protocol: z.string().min(1),
     name: z.string().min(1),
-    positions: Position,
+    positions: z.array(Position).min(1),
   })
   .refine(
     (market) =>
-      flatten(market.positions).every((p) => (p.kind === "stellar_contract") === (market.chainId === STELLAR_CHAIN_ID)),
+      market.positions.flatMap(flatten).every((p) => (p.kind === "stellar_contract") === (market.chainId === STELLAR_CHAIN_ID)),
     "kind does not match chain",
   );
 
