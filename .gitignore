@@ -1,7 +1,11 @@
 node_modules/
 .DS_Store
 
-# bun.lock is the committed lockfile
-package-lock.json
+# package-lock.json is the committed lockfile
 pnpm-lock.yaml
 yarn.lock
+bun.lock
+
+# local tooling
+.claude/
+.devcontainer/

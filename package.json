@@ -2,21 +2,15 @@
   "name": "firelight-markets",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=22.18"
-  },
   "scripts": {
-    "lookup": "node src/cli.ts lookup",
-    "encode": "node src/cli.ts encode",
-    "validate": "node src/cli.ts validate",
-    "typecheck": "tsc --noEmit",
-    "test": "node --test \"test/**/*.test.ts\""
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "viem": "^2.56.8"
+    "viem": "^2.56.9",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@types/node": "^22.18.0",
+    "@types/node": "^26.6.2",
     "typescript": "^7.0.2"
   }
 }

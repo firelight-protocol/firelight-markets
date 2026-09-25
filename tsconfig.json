@@ -11,10 +11,8 @@
     "noEmit": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
     "skipLibCheck": true,
-    "types": ["node"],
-    "erasableSyntaxOnly": true
+    "types": ["node"]
   },
-  "include": ["src", "test"]
+  "include": ["src"]
 }
