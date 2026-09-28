@@ -22,6 +22,8 @@ export function positionId(position: Position): Hex {
     case "morpho_blue_supply.v1":
     case "morpho_blue_borrow.v1":
       return tagged(position.kind, ["bytes32"], [position.params.morphoMarketId as Hex]);
+    case "boring_vault.v1":
+      return tagged(position.kind, ["address", "bytes32"], [position.params.vault, position.params.manageRoot] as Hex[]);
     case "twyne_position.v1": {
       const { intermediateVault, targetVault, targetAsset } = position.params;
       return tagged(position.kind, ["address", "address", "address"], [intermediateVault, targetVault, targetAsset] as Hex[]);

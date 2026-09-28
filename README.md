@@ -15,7 +15,7 @@ leaves   = sort(unique(positionId(p) for p in positions))
 marketId = keccak256(abi.encode(keccak256("firelight.market.v1"), keccak256(concat(leaves))))
 ```
 
-A position is anything that can be identified with 32 bytes, such as a vault, a token holding, or one side of a Morpho Blue market. A cover on a vault includes the vault itself, every position it allocates to, and so on down to the leaves. Only the set of positions is hashed, so their order and nesting do not affect the `marketId`.
+A position is anything that can be identified with 32 bytes, such as a vault, a token holding, or one side of a Morpho Blue market. A cover on a vault includes the vault itself, every position it allocates to, and so on down to the leaves. Only the set of positions is hashed, so their order and nesting do not affect the `marketId`. A vault whose allocations are bounded only by a merkle tree, such as a Veda BoringVault, is identified by its tree roots instead of its allocations; see the cookbook.
 
 Perils, thresholds, limits, premium, dates and the buyer are not part of the `marketId`. They belong to the term sheet, which is signed off-chain.
 
@@ -29,6 +29,7 @@ A kind turns a protocol-specific description of a position into a 32-byte `posit
 | `stellar_contract` | `contract` (`C…` strkey) | Soroban vaults |
 | `morpho_blue_supply.v1` | `morphoMarketId` | lending into a Morpho Blue market |
 | `morpho_blue_borrow.v1` | `morphoMarketId` | borrowing from a Morpho Blue market, including loops |
+| `boring_vault.v1` | `vault`, `manageRoot` | a Veda BoringVault under one of its manage roots |
 | `twyne_position.v1` (draft) | `intermediateVault`, `targetVault`, `targetAsset` | Twyne positions |
 
 Only `evm_address` and `stellar_contract` positions may have `children`, which are the positions a vault allocates to.
@@ -193,7 +194,7 @@ The adapters only supply, so `morpho_blue_borrow.v1` never appears. Changes that
 
 Protocol bucket not decided yet.
 
-A Core Vault keeps idle assets itself and moves them into subvaults. A subvault calls other protocols, and every call is checked by its `verifier()`. A verifier allows calls in two ways: it lists some itself (`allowedCallAt(0)` to `allowedCallAt(allowedCalls() - 1)`), and it accepts proofs against a `merkleRoot()`. This is the same model as a Veda BoringVault's manageRoot. Mellow publishes each subvault's merkle leaves in `scripts/jsons/` of the `mellow-finance/flexible-vaults` repository.
+A Core Vault keeps idle assets itself and moves them into subvaults. A subvault calls other protocols, and every call is checked by its `verifier()`. A verifier allows calls in two ways: it lists some itself (`allowedCallAt(0)` to `allowedCallAt(allowedCalls() - 1)`), and it accepts proofs against a `merkleRoot()`. The mechanism is the same as a Veda BoringVault's manage root, but a Mellow subvault is declared by its targets, not by its root. Mellow publishes each subvault's merkle leaves in `scripts/jsons/` of the `mellow-finance/flexible-vaults` repository.
 
 Many Mellow token addresses are share managers, not vaults. If the address has a `vault()` function, start from that vault.
 
@@ -235,6 +236,34 @@ Older Mellow vaults use different contracts:
         }
       ]
     }
+  ]
+}
+```
+
+### Veda BoringVault
+
+Protocol bucket not decided yet.
+
+A BoringVault holds the funds and has no strategy logic of its own. A strategist moves them through the vault's manager (`ManagerWithMerkleVerification`), and every call must carry a merkle proof against `manageRoot(strategist)`, a root the manager stores per strategist. A leaf is `keccak256(abi.encodePacked(decoderAndSanitizer, target, valueNonZero, selector, packedAddressArguments))`, so the tree fixes which contracts, functions and address arguments the strategist may use. The tree is the strategy, and it cannot be read from the chain: a tree has hundreds or thousands of leaves, and most of them (approvals, swaps, bridges) are not positions.
+
+A BoringVault is therefore declared by its roots, not by its targets: one `boring_vault.v1` position per active manage root, with the vault address and the root. A vault with two strategists on different roots is two positions. Any change to a root gives a new `marketId`. Do not add the vault as an `evm_address`, do not expand the leaves into children, and do not include the Teller, the Accountant, the hook, the decoders or a drone. The same applies when a BoringVault sits under another vault.
+
+To find the roots:
+
+- The manager. `vault.authority()` is a RolesAuthority. A manager is an address for which `canCall(manager, vault, 0x224d8703)` is true (the selector of `manage(address[],bytes[],uint256[])`; the single-call form is `0xf6e715d0`). Get the candidates from the authority's `UserRoleUpdated` events for the roles that `RoleCapabilityUpdated` gave those selectors, or from `metadata.ManagerAddress` in Veda's leaf files, which can be stale. Check that `manager.vault()` is the vault. If an authorized manager has no `manageRoot(address)` function, the vault cannot be declared until a rule for it is written here.
+- The strategists. Take every `strategist` in the manager's `ManageRootUpdated` events. A root is active when `manageRoot(strategist)` is not zero and `canCall(strategist, manager, 0x244b0f6a)` is true (the selector of `manageVaultWithMerkleVerification`). A strategist whose root was set back to zero is left out. The manager can be its own strategist: that root is used for the calls made inside a flash loan, and it counts like any other.
+- The leaves are not part of the position. To see what a root allows, take the `leafs/<chain>/<name>StrategistLeafs.json` file in the `Veda-Labs/boring-vault` repository whose `metadata.ManageRoot` equals the root, or `GET /v1/trees/{root}` on Veda's API. `GET /v1/vaults/{chain}/{vault}/roots` lists a vault's roots with their strategist and whether they are active. The API needs a key.
+
+The authority owner can set any root and can grant `manage` to any address, so the roots bound the strategists, not the owner. That belongs in the term sheet.
+
+```json
+{
+  "chainId": "1",
+  "protocol": "<bucket>",
+  "name": "<vault name>",
+  "positions": [
+    { "kind": "boring_vault.v1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist A)>" } },
+    { "kind": "boring_vault.v1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist B)>" } }
   ]
 }
 ```

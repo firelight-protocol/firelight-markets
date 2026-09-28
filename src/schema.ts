@@ -14,6 +14,7 @@ export type Position =
   | { kind: "evm_address"; params: { address: string }; children?: Position[] }
   | { kind: "stellar_contract"; params: { contract: string }; children?: Position[] }
   | { kind: "morpho_blue_supply.v1" | "morpho_blue_borrow.v1"; params: { morphoMarketId: string } }
+  | { kind: "boring_vault.v1"; params: { vault: string; manageRoot: string } }
   | { kind: "twyne_position.v1"; params: { intermediateVault: string; targetVault: string; targetAsset: string } };
 
 export const Position: z.ZodType<Position, unknown> = z.discriminatedUnion("kind", [
@@ -34,6 +35,10 @@ export const Position: z.ZodType<Position, unknown> = z.discriminatedUnion("kind
   z.strictObject({
     kind: z.literal(["morpho_blue_supply.v1", "morpho_blue_borrow.v1"]),
     params: z.strictObject({ morphoMarketId: bytes32 }),
+  }),
+  z.strictObject({
+    kind: z.literal("boring_vault.v1"),
+    params: z.strictObject({ vault: address, manageRoot: bytes32 }),
   }),
   // Draft
   z.strictObject({
