@@ -1,5 +1,3 @@
-// Registry schema (PROPOSAL §2, §5). Parsing returns canonical params.
-
 import { getAddress, isAddress } from "viem";
 import { z } from "zod";
 
@@ -37,7 +35,7 @@ export const Position: z.ZodType<Position, unknown> = z.discriminatedUnion("kind
     kind: z.literal(["morpho_blue_supply.v1", "morpho_blue_borrow.v1"]),
     params: z.strictObject({ morphoMarketId: bytes32 }),
   }),
-  // Draft, blocked on OPEN_QUESTIONS §1 (PROPOSAL §2.6).
+  // Draft
   z.strictObject({
     kind: z.literal("twyne_position.v1"),
     params: z.strictObject({ intermediateVault: address, targetVault: address, targetAsset: address }),

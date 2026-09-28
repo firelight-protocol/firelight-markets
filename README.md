@@ -19,8 +19,6 @@ A position is anything that can be identified with 32 bytes, such as a vault, a 
 
 Perils, thresholds, limits, premium, dates and the buyer are not part of the `marketId`. They belong to the term sheet, which is signed off-chain.
 
-The full design is in [PROPOSAL.md](PROPOSAL.md).
-
 ## Kinds
 
 A kind turns a protocol-specific description of a position into a 32-byte `positionId`.

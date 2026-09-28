@@ -1,5 +1,3 @@
-// marketId derivation (PROPOSAL §2, §3).
-
 import { concat, encodeAbiParameters, keccak256, pad, stringToBytes, toHex, type Hex } from "viem";
 import { flatten, Market, type Position } from "./schema.ts";
 

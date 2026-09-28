@@ -3,7 +3,6 @@ import { test } from "node:test";
 import markets from "../markets.json" with { type: "json" };
 import { encode } from "../src/encode.ts";
 
-// PROPOSAL §6.
 const EXPECTED: Record<string, string> = {
   "PRIME/PYUSD Morpho loop": "0xc11577cf6aafca2ca3749757145adf3d41892ce27810147e5fdafcfc24a68547",
   "Aave Core wstETH → USDT": "0xa777369e19bbbc775ba9d9a3bf3264d7766899bc4f4a20a87df9888a71e5b53d",
