@@ -20,6 +20,7 @@ const EXPECTED: Record<string, string> = {
   "PST/PYUSD Morpho loop": "0xc32052327a23ff0936cd3963e2f02228569ac136dd9ae66977e6e23341306d85",
   "sUSDe/PYUSD Morpho loop": "0x65c2eb86c6a497916bc70378ad7c048e370b7c1c2820b411ed7de49afe7d12ef",
   "syrupUSDC/PYUSD Morpho loop": "0xa46a0eaaf16cd7f75edf52ba6ba7c467746a58b4356ad58dddcaf4286156d9ad",
+  "Test-Vault": "0xb05cd84c889f25574458cbd35125f519a126431858ec5e54158daa7b364a32cb",
 };
 
 for (const market of markets) {
