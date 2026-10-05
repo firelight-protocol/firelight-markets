@@ -14,3 +14,7 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - name: registry.json matches markets.json
+        run: |
+          npm run encode -- markets.json --write
+          git diff --exit-code -- registry.json
