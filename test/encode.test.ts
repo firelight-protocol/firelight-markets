@@ -4,22 +4,22 @@ import markets from "./fixtures/markets.json" with { type: "json" };
 import { encode } from "../src/encode.ts";
 
 const EXPECTED: Record<string, string> = {
-  "PRIME/PYUSD Morpho loop": "0xc11577cf6aafca2ca3749757145adf3d41892ce27810147e5fdafcfc24a68547",
-  "Aave Core wstETH → USDT": "0xa777369e19bbbc775ba9d9a3bf3264d7766899bc4f4a20a87df9888a71e5b53d",
-  "Aave Core wstETH → WETH": "0x88b4150dfbb64a818ea03eef980301c29bee536255240b5581055d15e514d9e5",
-  "Aave Core rsETH → WETH": "0x67b1c9be3b339c080329f74e345ff31eaac01aebf3a0c1f164ffc3ef6db8a495",
-  "wstETH/WETH Morpho loop": "0x8ff4120802e493aabb507dfbb2dec2d54175a61676ce10cfe656de01b01186f0",
-  "Spark wstETH → WETH": "0xa34cd9546de03c23d19ab1ce5b9dda263f9beadcac0b054dd44b5d201d3f55e3",
-  "Spark wstETH → USDT": "0x74a3907e400ae7702ae7e47d9ca008016a16b36b71b453070a7fffed8ee59551",
-  "Aave Mantle sUSDe → USDT0": "0x02af95ebffca66ee953bf080f97cd87047d4a17897b16e52c82b259882d3a85e",
-  "Aave Plasma sUSDe → USDT0": "0xbe7c230070ba236066e286f26973995e8a349201091278a2c471ef9694b47254",
-  "Aave Plasma syrupUSDT → USDT0": "0xabd062b643449e35baab597cc9aecb8f299edcf34ad768e6db381445f7ef7ed8",
-  "Hold syrupUSDC": "0x97b9d72cf48eab94597dfa490cb88949a57ffc20163b09a8e4f2f75edf43f821",
-  "Hold syrupUSDT": "0x483ea6f0d5e31efc979bab8d0cdc56afca2f1eb4b9e450b48a5a352a307a312f",
-  "Spark USDC supply": "0x1fc097f101fb192f2a333c762160f2302448136b99d507e269112bc3eea09b5b",
-  "PST/PYUSD Morpho loop": "0xc32052327a23ff0936cd3963e2f02228569ac136dd9ae66977e6e23341306d85",
-  "sUSDe/PYUSD Morpho loop": "0x65c2eb86c6a497916bc70378ad7c048e370b7c1c2820b411ed7de49afe7d12ef",
-  "syrupUSDC/PYUSD Morpho loop": "0xa46a0eaaf16cd7f75edf52ba6ba7c467746a58b4356ad58dddcaf4286156d9ad",
+  "PRIME/PYUSD Morpho loop": "0x660cc67a8bd825c8fe23632cab872180d92349125b090a59613f66f5b988cef9",
+  "Aave Core wstETH → USDT": "0x5dac10fc8b93af5906131d95c844ae1c99cf69aba511763fb6c0761335b7c823",
+  "Aave Core wstETH → WETH": "0x9bb15789b32326b5cc9f22d06b112f53292f49e7f8d87dee38aae97dbac15723",
+  "Aave Core rsETH → WETH": "0x7b315ea0a7367d88428631689291c100c28da46155480ce22826ce56170ad239",
+  "wstETH/WETH Morpho loop": "0x50d540a6a82e370ca267bfc9f55bee631da55ef457955a158148969b62e1d71d",
+  "Spark wstETH → WETH": "0x39e7578f5a97ca925f5e70eb62833a4b99cfd9bc989b4ca6e3a95b6b54bb3ac3",
+  "Spark wstETH → USDT": "0x11c524113360278344fdf7c3c1bae76e48c7ce979d20278d7c8e886d5a576e0e",
+  "Aave Mantle sUSDe → USDT0": "0x5a700f80c17096a52f2f822981eef2b2993744f8d082b8fbef1cd7d9506b2c7b",
+  "Aave Plasma sUSDe → USDT0": "0x271a0abce1978ca9b499fdea56e7f22db629b965b72dde54ce576fa1a0385613",
+  "Aave Plasma syrupUSDT → USDT0": "0x9a7bce5e104e812506010ae883912f793000d76ada9eb2952bb60065a66d946d",
+  "Hold syrupUSDC": "0xab02532a6e68a6ceb440c609ccb9afdc733e1ce7f989f710822ec6c23a8e4971",
+  "Hold syrupUSDT": "0xa162fa32db2e7b35eeb20508d7380bd0721715b87c6101ff7551015be97c9b40",
+  "Spark USDC supply": "0x99505a7083b6e3efafd1446496cb0c7fca3e9c2f7a46ad00c22292e50486da31",
+  "PST/PYUSD Morpho loop": "0x7112a395ab319f16ce823364a3f198ae1a0871874deee88cb813b6eec2831bd4",
+  "sUSDe/PYUSD Morpho loop": "0xd824a300d63b29e8a7ebaaae0ba8fbe1d91b0ef1fbe317d910e65c55057c3862",
+  "syrupUSDC/PYUSD Morpho loop": "0xa70bee70d770d8ff512fd2cb5040644565ffd1787f6b4edaeab57f178b445418",
 };
 
 for (const market of markets) {

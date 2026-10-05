@@ -2,7 +2,7 @@
 
 The registry of markets that Firelight covers, and the code that derives each market's `marketId`.
 
-On-chain, a market is identified by the triple `(chainId, protocol, marketId)`. This repository defines how the `marketId` is derived and lists every market that has been declared.
+On-chain, a market is identified by the triple `(chainId, protocol, marketId)`. This repository defines how the `marketId` is derived and lists every market that has been declared. The market's `chainId` is the chain the covered positions live on; a vault may allocate to other chains, and those positions carry their own `chainId`. Supported chains are listed in [`chainIds.json`](chainIds.json): EVM chains by their chainlist.org id, and non-EVM chains by ids we reserve from 2^63 up.
 
 The published list is [`registry.json`](registry.json).
 
@@ -11,17 +11,18 @@ The published list is [`registry.json`](registry.json).
 A `marketId` is the hash of the set of positions a cover includes:
 
 ```
-leaves   = sort(unique(positionId(p) for p in positions))
+leaf(p)  = keccak256(abi.encode(uint256(p.chainId), positionId(p)))
+leaves   = sort(unique(leaf(p) for p in positions))
 marketId = keccak256(abi.encode(keccak256("firelight.market.v1"), keccak256(concat(leaves))))
 ```
 
-A position is anything that can be identified with 32 bytes, such as a vault, a token holding, or one side of a Morpho Blue market. A cover on a vault includes the vault itself, every position it allocates to, and so on down to the leaves. Only the set of positions is hashed, so their order and nesting do not affect the `marketId`. A vault whose allocations are bounded only by a merkle tree, such as a Veda BoringVault, is identified by its tree roots instead of its allocations; see the cookbook.
+A position is anything that can be identified with a chain and 32 bytes, such as a vault, a token holding, or one side of a Morpho Blue market. The same address on two chains is two positions. A cover on a vault includes the vault itself, every position it allocates to, and so on down to the leaves. Only the set of positions is hashed, so their order and nesting do not affect the `marketId`. A vault whose allocations are bounded only by a merkle tree, such as a Veda BoringVault, is identified by its tree roots instead of its allocations; see the cookbook.
 
 Perils, thresholds, limits, premium, dates and the buyer are not part of the `marketId`. They belong to the term sheet, which is signed off-chain.
 
 ## Kinds
 
-A kind turns a protocol-specific description of a position into a 32-byte `positionId`.
+A kind turns a protocol-specific description of a position into a 32-byte `positionId`. Every position has a `kind`, a `chainId` and `params`.
 
 | Kind | Params | Used for |
 |---|---|---|
@@ -32,7 +33,7 @@ A kind turns a protocol-specific description of a position into a 32-byte `posit
 | `boring_vault.v1` | `vault`, `manageRoot` | a Veda BoringVault under one of its manage roots |
 | `twyne_position.v1` (draft) | `intermediateVault`, `targetVault`, `targetAsset` | Twyne positions |
 
-Only `evm_address` and `stellar_address` positions may have `children`, which are the positions a vault allocates to.
+Any position may have `children`, which are the positions it allocates to, on any chain. The cookbook says which positions actually take children; a Morpho Blue market or a BoringVault root never does.
 
 ## Cookbook
 
@@ -57,8 +58,8 @@ Do not include the Pool, the underlying asset or the stable-debt token. To find 
   "protocol": "aave_v3",
   "name": "Aave Core wstETH → USDT",
   "positions": [
-    { "kind": "evm_address", "params": { "address": "0x0B925eD163218f6662a35e0f0371Ac234f9E9371" } },
-    { "kind": "evm_address", "params": { "address": "0x6df1C1E379bC5a00a7b4C6e67A203333772f45A8" } }
+    { "kind": "evm_address", "chainId": "1", "params": { "address": "0x0B925eD163218f6662a35e0f0371Ac234f9E9371" } },
+    { "kind": "evm_address", "chainId": "1", "params": { "address": "0x6df1C1E379bC5a00a7b4C6e67A203333772f45A8" } }
   ]
 }
 ```
@@ -75,7 +76,7 @@ Spark is a fork of Aave v3, so the rules are the same. Use the spToken of the su
   "protocol": "spark",
   "name": "Spark USDC supply",
   "positions": [
-    { "kind": "evm_address", "params": { "address": "0x377C3bd93f2a2984E1E7bE6A5C22c525eD4A4815" } }
+    { "kind": "evm_address", "chainId": "1", "params": { "address": "0x377C3bd93f2a2984E1E7bE6A5C22c525eD4A4815" } }
   ]
 }
 ```
@@ -93,7 +94,7 @@ A Morpho Blue market is identified by its `morphoMarketId`, which is the `Id` sh
   "protocol": "morpho_market",
   "name": "wstETH/WETH Morpho loop",
   "positions": [
-    { "kind": "morpho_blue_borrow.v1", "params": { "morphoMarketId": "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e" } }
+    { "kind": "morpho_blue_borrow.v1", "chainId": "1", "params": { "morphoMarketId": "0xb8fc70e82bc5bb53e773626fcc6a23f7eefa036918d7ef216ecfb1950a94a85e" } }
   ]
 }
 ```
@@ -108,7 +109,7 @@ Holding a Maple syrup token is one `evm_address` position: the address of the sy
   "protocol": "maple",
   "name": "Hold syrupUSDC",
   "positions": [
-    { "kind": "evm_address", "params": { "address": "0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b" } }
+    { "kind": "evm_address", "chainId": "1", "params": { "address": "0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b" } }
   ]
 }
 ```
@@ -127,10 +128,11 @@ The withdraw queue always contains every market with a non-zero cap and every ma
   "positions": [
     {
       "kind": "evm_address",
+      "chainId": "1",
       "params": { "address": "<vault>" },
       "children": [
-        { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } },
-        { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(1)>" } }
+        { "kind": "morpho_blue_supply.v1", "chainId": "1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } },
+        { "kind": "morpho_blue_supply.v1", "chainId": "1", "params": { "morphoMarketId": "<withdrawQueue(1)>" } }
       ]
     }
   ]
@@ -162,24 +164,28 @@ The adapters only supply, so `morpho_blue_borrow.v1` never appears. Changes that
   "positions": [
     {
       "kind": "evm_address",
+      "chainId": "1",
       "params": { "address": "<vault>" },
       "children": [
         {
           "kind": "evm_address",
+          "chainId": "1",
           "params": { "address": "<market adapter>" },
           "children": [
-            { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<Blue market id>" } }
+            { "kind": "morpho_blue_supply.v1", "chainId": "1", "params": { "morphoMarketId": "<Blue market id>" } }
           ]
         },
         {
           "kind": "evm_address",
+          "chainId": "1",
           "params": { "address": "<vault adapter>" },
           "children": [
             {
               "kind": "evm_address",
+              "chainId": "1",
               "params": { "address": "<morphoVaultV1()>" },
               "children": [
-                { "kind": "morpho_blue_supply.v1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } }
+                { "kind": "morpho_blue_supply.v1", "chainId": "1", "params": { "morphoMarketId": "<withdrawQueue(0)>" } }
               ]
             }
           ]
@@ -224,14 +230,16 @@ Older Mellow vaults use different contracts:
   "positions": [
     {
       "kind": "evm_address",
+      "chainId": "1",
       "params": { "address": "<vault>" },
       "children": [
         {
           "kind": "evm_address",
+          "chainId": "1",
           "params": { "address": "<subvault>" },
           "children": [
-            { "kind": "evm_address", "params": { "address": "<Symbiotic vault>" } },
-            { "kind": "evm_address", "params": { "address": "<another Core Vault>" } }
+            { "kind": "evm_address", "chainId": "1", "params": { "address": "<Symbiotic vault>" } },
+            { "kind": "evm_address", "chainId": "1", "params": { "address": "<another Core Vault>" } }
           ]
         }
       ]
@@ -262,8 +270,8 @@ The authority owner can set any root and can grant `manage` to any address, so t
   "protocol": "<bucket>",
   "name": "<vault name>",
   "positions": [
-    { "kind": "boring_vault.v1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist A)>" } },
-    { "kind": "boring_vault.v1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist B)>" } }
+    { "kind": "boring_vault.v1", "chainId": "1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist A)>" } },
+    { "kind": "boring_vault.v1", "chainId": "1", "params": { "vault": "<vault>", "manageRoot": "<manageRoot(strategist B)>" } }
   ]
 }
 ```
@@ -300,7 +308,7 @@ npm test
      "protocol": "morpho_market",
      "name": "PRIME/PYUSD Morpho loop",
      "positions": [
-       { "kind": "morpho_blue_borrow.v1", "params": { "morphoMarketId": "0x41c41d0c9aadbf4751f5ee215ed5a16954a4b34e1b70fca5393d4b08858fa3fa" } }
+       { "kind": "morpho_blue_borrow.v1", "chainId": "1", "params": { "morphoMarketId": "0x41c41d0c9aadbf4751f5ee215ed5a16954a4b34e1b70fca5393d4b08858fa3fa" } }
      ]
    }
    ```

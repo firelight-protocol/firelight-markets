@@ -13,6 +13,7 @@ function stellarPayload(strkey: string): Hex {
   return toHex(BigInt("0b" + bits.slice(8, 8 + 256)), { size: 32 });
 }
 
+/** Identifies a position within its chain. */
 export function positionId(position: Position): Hex {
   switch (position.kind) {
     case "evm_address":
@@ -31,9 +32,13 @@ export function positionId(position: Position): Hex {
   }
 }
 
+/** Identifies a position globally: the same address on two chains is two leaves. */
+export const leaf = (position: Position): Hex =>
+  keccak256(encodeAbiParameters([{ type: "uint256" }, { type: "bytes32" }], [BigInt(position.chainId), positionId(position)]));
+
 /** Parses a registry market and returns its marketId. */
 export function encode(json: unknown): Hex {
-  const leaves = [...new Set(Market.parse(json).positions.flatMap(flatten).map(positionId))].sort();
+  const leaves = [...new Set(Market.parse(json).positions.flatMap(flatten).map(leaf))].sort();
   return keccak256(encodeAbiParameters([{ type: "bytes32" }, { type: "bytes32" }], [MARKET_TAG, keccak256(concat(leaves))]));
 }
 
