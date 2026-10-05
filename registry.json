@@ -957,5 +957,317 @@
         ]
       }
     ]
+  },
+  {
+    "marketId": "0xafd920e57001dae583c1933c3eec32280d07ef05bc206690473c3f8d9a8cd4b3",
+    "chainId": "57073",
+    "protocol": "veda",
+    "name": "Kraken Protected Strategies USDC",
+    "positions": [
+      {
+        "kind": "evm_address",
+        "chainId": "57073",
+        "params": {
+          "address": "0xDbD87325D7b1189Dcc9255c4926076fF4a96A271"
+        },
+        "children": [
+          {
+            "kind": "stellar_address",
+            "chainId": "9223372036854775809",
+            "params": {
+              "address": "CALFCZ4TY2CLHDHNJWCZX6JKYGUPV7P3GNQ3UVABXNE5JCV2E774APUM"
+            },
+            "children": [
+              {
+                "kind": "stellar_address",
+                "chainId": "9223372036854775809",
+                "params": {
+                  "address": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75"
+                },
+                "children": [
+                  {
+                    "kind": "stellar_address",
+                    "chainId": "9223372036854775809",
+                    "params": {
+                      "address": "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "1",
+            "params": {
+              "address": "0xDbD87325D7b1189Dcc9255c4926076fF4a96A271"
+            },
+            "children": [
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0x8B84E1Dd4624e2EF9dc54184B245ab992C74D8d0"
+                },
+                "children": [
+                  {
+                    "kind": "evm_address",
+                    "chainId": "1",
+                    "params": {
+                      "address": "0xb576765fB15505433aF24FEe2c0325895C559FB2"
+                    },
+                    "children": [
+                      {
+                        "kind": "evm_address",
+                        "chainId": "1",
+                        "params": {
+                          "address": "0xc2A11ba52aD80124cCC60774c881f93738f334d4"
+                        },
+                        "children": [
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0xd8a8e6667f58aa9229e8979bd619742b1660ee856c200a93e407dbccb7222323"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0xf5c5df23559b0fb56560a7578ea17d81e245153ba64b8132df026c9358864d27"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0x90ef0c5a0dc7c4de4ad4585002d44e9d411d212d2f6258e94948beecf8b4c0d5"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0xc9629945524f3fde56c7e8854a6c3d48e76b9d97236abbe73c750fcc7aeb8501"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0x6a7e36eb088bd501d73f7ab4c5b8671358559341a78ce521c9e499dc0bc642b9"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0x85d59152eeeab7ca024804895b358868d8dd1e134171be400d7792d5604a212c"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0xbe50eed784490d6c32f398902b55eb5e1bd5af89e1f554993ad5fea899be090b"
+                            }
+                          },
+                          {
+                            "kind": "morpho_blue_supply.v1",
+                            "chainId": "1",
+                            "params": {
+                              "morphoMarketId": "0xe51f9aaad25d0e755429cf77076b3c2d37cb1228ed81f8a5482f2102c220eef5"
+                            }
+                          },
+                          {
+                            "kind": "evm_address",
+                            "chainId": "1",
+                            "params": {
+                              "address": "0x9D39A5DE30e57443BfF2A8307A4256c8797A3497"
+                            },
+                            "children": [
+                              {
+                                "kind": "evm_address",
+                                "chainId": "1",
+                                "params": {
+                                  "address": "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "evm_address",
+                            "chainId": "1",
+                            "params": {
+                              "address": "0xE6212D05cB5aF3C821Fef1C1A233a678724F9E7E"
+                            },
+                            "children": [
+                              {
+                                "kind": "evm_address",
+                                "chainId": "1",
+                                "params": {
+                                  "address": "0xa569d910839Ae8865Da8F8e70FfFb0cBA869F961"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "kind": "evm_address",
+                            "chainId": "1",
+                            "params": {
+                              "address": "0x8f1dF6D7F2db73eECE86a18b4381F4707b918FB1"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "kind": "evm_address",
+                        "chainId": "1",
+                        "params": {
+                          "address": "0x6c3ea9036406852006290770BEdFcAbA0e23A0e8"
+                        }
+                      },
+                      {
+                        "kind": "evm_address",
+                        "chainId": "1",
+                        "params": {
+                          "address": "0x9e396dE3312D373b87F9BD8763fb48184b42aac0"
+                        }
+                      },
+                      {
+                        "kind": "evm_address",
+                        "chainId": "1",
+                        "params": {
+                          "address": "0xe8C9C99EcaD0686A14A00d8521c572281E938008"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0x4E0292caa97128e35a695dCd53c465E56F69c3A0"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0x62A88Bea6fe527b5DEfAA103A3f8b5010205aF92"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0xEd23b12e7700BeB638562A22ED65f74291901c25"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0x1F53135155d6fF516bCcfDd9424fcdB8AD1eFB77"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "1",
+                "params": {
+                  "address": "0xFDe306767CE0ABb3d60d347672B1d7Ed766a58c2"
+                },
+                "children": [
+                  {
+                    "kind": "evm_address",
+                    "chainId": "1",
+                    "params": {
+                      "address": "0xA4015c84d12f819d11aA0C7Fa8d0B8b2Cf2FD27D"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0x70A38B0c90441e991346B7A0Cd98C8528dD1c234"
+            },
+            "children": [
+              {
+                "kind": "evm_address",
+                "chainId": "57073",
+                "params": {
+                  "address": "0x2816cf15F6d2A220E789aA011D5EE4eB6c47FEbA"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "57073",
+                "params": {
+                  "address": "0x2D270e6886d130D724215A266106e6832161EAEd"
+                }
+              },
+              {
+                "kind": "evm_address",
+                "chainId": "57073",
+                "params": {
+                  "address": "0x89991637dbaCd0999dE1bc8e86330302EAd2CD89"
+                }
+              }
+            ]
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0xc46f2443b3521632E2E2a903D6da8f965B46f6a0"
+            }
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0x9c2477D4Ea17d3cCC45e6b1087c94d14926F54C9"
+            }
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0xEd23b12e7700BeB638562A22ED65f74291901c25"
+            }
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0x1F53135155d6fF516bCcfDd9424fcdB8AD1eFB77"
+            }
+          },
+          {
+            "kind": "evm_address",
+            "chainId": "57073",
+            "params": {
+              "address": "0xFDe306767CE0ABb3d60d347672B1d7Ed766a58c2"
+            },
+            "children": [
+              {
+                "kind": "evm_address",
+                "chainId": "57073",
+                "params": {
+                  "address": "0xA4015c84d12f819d11aA0C7Fa8d0B8b2Cf2FD27D"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
