@@ -10,7 +10,7 @@ const tagged = (kind: string, types: string[], values: Hex[]) =>
 function stellarPayload(strkey: string): Hex {
   let bits = "";
   for (const char of strkey) bits += "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".indexOf(char).toString(2).padStart(5, "0");
-  return toHex(BigInt("0b" + bits.slice(8, 8 + 256)), { size: 32 });
+  return toHex(BigInt(`0b${bits.slice(8, 8 + 256)}`), { size: 32 });
 }
 
 /** Identifies a position within its chain. */
