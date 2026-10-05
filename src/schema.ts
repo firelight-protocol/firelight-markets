@@ -5,14 +5,15 @@ const STELLAR_CHAIN_ID = "9223372036854775809"; // 2^63 + 1
 
 const address = z.string().refine((value) => isAddress(value, { strict: false }), "invalid address").transform((value) => getAddress(value));
 const bytes32 = z.string().regex(/^0x[0-9a-fA-F]{64}$/, "invalid bytes32").transform((value) => value.toLowerCase());
-const contract = z.string().regex(/^C[A-Z2-7]{55}$/, "invalid contract");
+// Strkey of a G… account (ed25519 public key) or a C… contract; both carry a 32-byte payload.
+const strkey = z.string().regex(/^[GC][A-Z2-7]{55}$/, "invalid strkey");
 
-// Only vaults (evm_address, stellar_contract) may have children.
+// Only vaults (evm_address, stellar_address) may have children.
 const children = () => z.array(Position).min(1).optional();
 
 export type Position =
   | { kind: "evm_address"; params: { address: string }; children?: Position[] }
-  | { kind: "stellar_contract"; params: { contract: string }; children?: Position[] }
+  | { kind: "stellar_address"; params: { address: string }; children?: Position[] }
   | { kind: "morpho_blue_supply.v1" | "morpho_blue_borrow.v1"; params: { morphoMarketId: string } }
   | { kind: "boring_vault.v1"; params: { vault: string; manageRoot: string } }
   | { kind: "twyne_position.v1"; params: { intermediateVault: string; targetVault: string; targetAsset: string } };
@@ -26,8 +27,8 @@ export const Position: z.ZodType<Position, unknown> = z.discriminatedUnion("kind
     },
   }),
   z.strictObject({
-    kind: z.literal("stellar_contract"),
-    params: z.strictObject({ contract }),
+    kind: z.literal("stellar_address"),
+    params: z.strictObject({ address: strkey }),
     get children() {
       return children();
     },
@@ -61,7 +62,7 @@ export const Market = z
   })
   .refine(
     (market) =>
-      market.positions.flatMap(flatten).every((p) => (p.kind === "stellar_contract") === (market.chainId === STELLAR_CHAIN_ID)),
+      market.positions.flatMap(flatten).every((p) => (p.kind === "stellar_address") === (market.chainId === STELLAR_CHAIN_ID)),
     "kind does not match chain",
   );
 

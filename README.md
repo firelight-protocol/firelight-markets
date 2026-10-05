@@ -26,13 +26,13 @@ A kind turns a protocol-specific description of a position into a 32-byte `posit
 | Kind | Params | Used for |
 |---|---|---|
 | `evm_address` | `address` | vaults, token holdings, Aave and Spark aTokens and variable-debt tokens |
-| `stellar_contract` | `contract` (`C…` strkey) | Soroban vaults |
+| `stellar_address` | `address` (`G…` account or `C…` contract strkey) | Soroban vaults, Stellar accounts |
 | `morpho_blue_supply.v1` | `morphoMarketId` | lending into a Morpho Blue market |
 | `morpho_blue_borrow.v1` | `morphoMarketId` | borrowing from a Morpho Blue market, including loops |
 | `boring_vault.v1` | `vault`, `manageRoot` | a Veda BoringVault under one of its manage roots |
 | `twyne_position.v1` (draft) | `intermediateVault`, `targetVault`, `targetAsset` | Twyne positions |
 
-Only `evm_address` and `stellar_contract` positions may have `children`, which are the positions a vault allocates to.
+Only `evm_address` and `stellar_address` positions may have `children`, which are the positions a vault allocates to.
 
 ## Cookbook
 

@@ -6,8 +6,8 @@ const MARKET_TAG = keccak256(stringToBytes("firelight.market.v1"));
 const tagged = (kind: string, types: string[], values: Hex[]) =>
   keccak256(encodeAbiParameters([{ type: "bytes32" }, ...types.map((type) => ({ type }))], [keccak256(stringToBytes(kind)), ...values]));
 
-// Strkey is base32(versionByte ‖ 32-byte contract id ‖ checksum); keep the contract id.
-function stellarContractId(strkey: string): Hex {
+// Strkey is base32(versionByte ‖ 32-byte payload ‖ checksum); keep the payload (ed25519 key or contract id).
+function stellarPayload(strkey: string): Hex {
   let bits = "";
   for (const char of strkey) bits += "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".indexOf(char).toString(2).padStart(5, "0");
   return toHex(BigInt("0b" + bits.slice(8, 8 + 256)), { size: 32 });
@@ -17,8 +17,8 @@ export function positionId(position: Position): Hex {
   switch (position.kind) {
     case "evm_address":
       return pad(position.params.address.toLowerCase() as Hex);
-    case "stellar_contract":
-      return stellarContractId(position.params.contract);
+    case "stellar_address":
+      return stellarPayload(position.params.address);
     case "morpho_blue_supply.v1":
     case "morpho_blue_borrow.v1":
       return tagged(position.kind, ["bytes32"], [position.params.morphoMarketId as Hex]);
