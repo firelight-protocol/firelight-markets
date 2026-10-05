@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import markets from "./fixtures/markets.json" with { type: "json" };
 import { encode } from "../src/encode.ts";
+import markets from "./fixtures/markets.json" with { type: "json" };
 
 const EXPECTED: Record<string, string> = {
   "PRIME/PYUSD Morpho loop": "0x660cc67a8bd825c8fe23632cab872180d92349125b090a59613f66f5b988cef9",

@@ -6,6 +6,7 @@
     "encode": "tsx src/cli.ts",
     "lookup": "tsx src/lookup.ts",
     "typecheck": "tsc --noEmit",
+    "lint": "biome check --error-on-warnings .",
     "test": "node --import tsx --test test/*.test.ts"
   },
   "dependencies": {
@@ -13,6 +14,7 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
     "@types/node": "^26.6.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"

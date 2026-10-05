@@ -22,4 +22,3 @@ test("boring_vault.v1: order and case do not matter", () =>
 
 test("boring_vault.v1: differs from the vault as a plain evm_address", () =>
   assert.notEqual(encode(market([root(vault, rootA)])), encode(market([{ kind: "evm_address", chainId: "1", params: { address: vault } }]))));
-

@@ -1,4 +1,4 @@
-import { concat, encodeAbiParameters, keccak256, pad, stringToBytes, toHex, type Hex } from "viem";
+import { concat, encodeAbiParameters, type Hex, keccak256, pad, stringToBytes, toHex } from "viem";
 import { flatten, Market, type Position } from "./schema.ts";
 
 const MARKET_TAG = keccak256(stringToBytes("firelight.market.v1"));

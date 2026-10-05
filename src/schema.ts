@@ -7,8 +7,14 @@ const STELLAR_CHAIN_ID = "9223372036854775809"; // 2^63 + 1
 const isEvmChain = (chainId: string) => BigInt(chainId) < 1n << 63n;
 
 const chainId = z.string().refine((value) => value in chainIds, { error: (issue) => `unsupported chainId ${issue.input}` });
-const address = z.string().refine((value) => isAddress(value, { strict: false }), "invalid address").transform((value) => getAddress(value));
-const bytes32 = z.string().regex(/^0x[0-9a-fA-F]{64}$/, "invalid bytes32").transform((value) => value.toLowerCase());
+const address = z
+  .string()
+  .refine((value) => isAddress(value, { strict: false }), "invalid address")
+  .transform((value) => getAddress(value));
+const bytes32 = z
+  .string()
+  .regex(/^0x[0-9a-fA-F]{64}$/, "invalid bytes32")
+  .transform((value) => value.toLowerCase());
 // Strkey of a G… account (ed25519 public key) or a C… contract; both carry a 32-byte payload.
 const strkey = z.string().regex(/^[GC][A-Z2-7]{55}$/, "invalid strkey");
 
@@ -40,15 +46,11 @@ export const Position: z.ZodType<Position, unknown> = z
     position(z.literal(["morpho_blue_supply.v1", "morpho_blue_borrow.v1"]), z.strictObject({ morphoMarketId: bytes32 })),
     position(z.literal("boring_vault.v1"), z.strictObject({ vault: address, manageRoot: bytes32 })),
     // Draft
-    position(
-      z.literal("twyne_position.v1"),
-      z.strictObject({ intermediateVault: address, targetVault: address, targetAsset: address }),
-    ),
+    position(z.literal("twyne_position.v1"), z.strictObject({ intermediateVault: address, targetVault: address, targetAsset: address })),
   ])
-  .refine(
-    (p) => (p.kind === "stellar_address" ? p.chainId === STELLAR_CHAIN_ID : isEvmChain(p.chainId)),
-    { error: (issue) => `${(issue.input as Position).kind} is not a kind of chain ${(issue.input as Position).chainId}` },
-  );
+  .refine((p) => (p.kind === "stellar_address" ? p.chainId === STELLAR_CHAIN_ID : isEvmChain(p.chainId)), {
+    error: (issue) => `${(issue.input as Position).kind} is not a kind of chain ${(issue.input as Position).chainId}`,
+  });
 
 export function flatten(position: Position): Position[] {
   return [position, ...(position.children ?? []).flatMap(flatten)];
